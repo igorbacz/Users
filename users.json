@@ -1,6 +1,5 @@
 {
   "users": [
-    { "name": "User 0", "uri": "/users/0", "email": "user0@company343.com", "uris": { "company": "/companies/343" } },
-    { "name": "User 1", "uri": "/users/1", "email": "user1@company518.com", "uris": { "company": "/companies/518" } }
+    { "name": "User 0", "uri": "/users/0", "email": "user0@company343.com", "uris": { "company": "/companies/343" } }
   ]
 }
