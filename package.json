@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/igorbacz/Users/issues"
   },
-  "homepage": "https://github.com/igorbacz/Users#readme"
+  "homepage": "https://github.com/igorbacz/Users#readme",
+  "dependencies": {
+    "json-server": "^0.17.0"
+  }
 }
