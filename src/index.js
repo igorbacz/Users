@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,19 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const renderUsers = () => __awaiter(this, void 0, void 0, function* () {
+const renderUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     let uri = "http://localhost:3000/users";
     const res = yield fetch(uri);
     const data = yield res.json();
     return data;
 });
-const renderCompanies = () => __awaiter(this, void 0, void 0, function* () {
+const renderCompanies = () => __awaiter(void 0, void 0, void 0, function* () {
     let uri = "http://localhost:3000/companies";
     const res = yield fetch(uri);
     const companies = yield res.json();
     return companies;
 });
-const printUserss = () => __awaiter(this, void 0, void 0, function* () {
+const printUserss = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield renderUsers();
     const companies = yield renderCompanies();
     const usersFromJson = () => {

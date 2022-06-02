@@ -1,4 +1,4 @@
-interface dataInterface {
+interface DataInterface {
   name: string;
   uri: string;
   email: string;
@@ -6,39 +6,45 @@ interface dataInterface {
   company: string;
 }
 
-interface companiesInterface {
+interface CompaniesInterface {
   name: string;
   uri: string;
 }
 
-interface newCompaniesInterface {
+interface NewCompaniesInterface {
   name: string;
   employees: string[];
 }
 
-const renderUsers = async (): Promise<dataInterface> => {
+interface Database {
+  data?: [];
+  companies?: [];
+  newCompanies?: [];
+}
+
+const renderUsers = async (): Promise<DataInterface> => {
   let uri: string = "http://localhost:3000/users";
 
   const res: Response = await fetch(uri);
-  const data: dataInterface = await res.json();
+  const data: DataInterface = await res.json();
   return data;
 };
 
-const renderCompanies = async (): Promise<companiesInterface> => {
+const renderCompanies = async (): Promise<Database> => {
   let uri: string = "http://localhost:3000/companies";
 
   const res: Response = await fetch(uri);
-  const companies: companiesInterface = await res.json();
+  const companies: Database = await res.json();
   return companies;
 };
 
 const printUserss = async (): Promise<void> => {
-  const data: dataInterface = await renderUsers();
-  const companies: companiesInterface = await renderCompanies();
+  const data: Database = await renderUsers();
+  const companies: Database = await renderCompanies();
 
   const usersFromJson = () => {
     const addUserstoCompany = () => {
-      const newCompanies: newCompaniesInterface = companies.map((x) => ({
+      const newCompanies: Database = companies.map((x) => ({
         name: x.name,
         employees: data
           .filter((y) => y.uris.company === x.uri)
