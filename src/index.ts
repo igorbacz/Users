@@ -1,26 +1,4 @@
-interface DataInterface {
-  name: string;
-  uri: string;
-  email: string;
-  uris: object;
-  company: string;
-}
-
-interface CompaniesInterface {
-  name: string;
-  uri: string;
-}
-
-interface NewCompaniesInterface {
-  name: string;
-  employees: string[];
-}
-
-interface Database {
-  data?: [];
-  companies?: [];
-  newCompanies?: [];
-}
+import { DataInterface, CompaniesInterface, NewCompaniesInterface, NewCompanies, Companies } from "./types";
 
 const renderUsers = async (): Promise<DataInterface> => {
   let uri: string = "http://localhost:3000/users";
@@ -30,21 +8,21 @@ const renderUsers = async (): Promise<DataInterface> => {
   return data;
 };
 
-const renderCompanies = async (): Promise<Database> => {
+const renderCompanies = async (): Promise<Companies> => {
   let uri: string = "http://localhost:3000/companies";
 
   const res: Response = await fetch(uri);
-  const companies: Database = await res.json();
+  const companies: Companies = await res.json();
   return companies;
 };
 
 const printUserss = async (): Promise<void> => {
-  const data: Database = await renderUsers();
-  const companies: Database = await renderCompanies();
+  const data: DataInterface = await renderUsers();
+  const companies: Companies = await renderCompanies();
 
   const usersFromJson = () => {
     const addUserstoCompany = () => {
-      const newCompanies: Database = companies.map((x) => ({
+      const newCompanies: NewCompanies = companies.companies.map((x) => ({
         name: x.name,
         employees: data
           .filter((y) => y.uris.company === x.uri)
@@ -61,24 +39,24 @@ const printUserss = async (): Promise<void> => {
         }
       }
 
-      let table = document.createElement("table") as HTMLTableElement;
-      let tr = table.insertRow(-1) as HTMLTableRowElement;
+      let table = <HTMLTableElement>document.createElement("table");
+      let tr = <HTMLTableRowElement>table.insertRow(-1);
 
       for (let i = 0; i < col.length; i++) {
-        let th = document.createElement("th") as HTMLTableCellElement;
+        let th = <HTMLTableCellElement>document.createElement("th");
         th.innerHTML = col[i];
         tr.appendChild(th);
       }
 
       for (let i = 0; i < newCompanies.length; i++) {
-        tr = table.insertRow(-1) as HTMLTableRowElement;
+        tr = <HTMLTableRowElement>table.insertRow(-1);
 
         for (let j = 0; j < col.length; j++) {
-          let tabCell = tr.insertCell(-1) as HTMLTableCellElement;
+          let tabCell = <HTMLTableCellElement>tr.insertCell(-1);
           tabCell.innerHTML = newCompanies[i][col[j]];
         }
       }
-      const divShowData = document.getElementById("showData") as HTMLElement;
+      const divShowData = <HTMLDivElement>document.querySelector("showData");
       divShowData.innerHTML = "";
       divShowData.appendChild(table);
     };
