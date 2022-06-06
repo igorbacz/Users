@@ -1,26 +1,20 @@
-export interface DataInterface {
+export interface User {
   name: string;
   uri: string;
   email: string;
-  uris: object;
-  company: string;
+  uris: {
+    company: string;
+  };
 }
 
-export interface CompaniesInterface {
+export interface Company {
   name: string;
   uri: string;
 }
 
-export interface NewCompaniesInterface {
+export type CompanyEmployee = string;
+
+export interface CompanyWithUsers {
   name: string;
-  employees: string[];
-}
-
-export interface NewCompanies {
-  length: number;
-  newCompanies: Array<NewCompaniesInterface>;
-}
-
-export interface Companies {
-  companies: Array<CompaniesInterface>;
+  employees: CompanyEmployee[];
 }

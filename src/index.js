@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var renderUsers = function () { return __awaiter(void 0, void 0, void 0, function () {
+var fetchUsers = function () { return __awaiter(void 0, void 0, void 0, function () {
     var uri, res, data;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -52,7 +52,7 @@ var renderUsers = function () { return __awaiter(void 0, void 0, void 0, functio
         }
     });
 }); };
-var renderCompanies = function () { return __awaiter(void 0, void 0, void 0, function () {
+var fetchCompanies = function () { return __awaiter(void 0, void 0, void 0, function () {
     var uri, res, companies;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -68,6 +68,21 @@ var renderCompanies = function () { return __awaiter(void 0, void 0, void 0, fun
         }
     });
 }); };
+var addUsersToCompanies = function (users, companies) { return companies.map(function (x) { return ({
+    name: x.name, employees: users
+        .filter(function (y) { return y.uris.company === x.uri; })
+        .map(function (z) { return z.name; })
+        .join(", ")
+}); }); };
+var findColums = function (columnsNames, objectToAnalyse) {
+    for (var ObjectKey in objectToAnalyse) {
+        var doesColumnExist = columnsNames.indexOf(ObjectKey) === -1;
+        if (doesColumnExist) {
+            columnsNames.push(ObjectKey);
+        }
+    }
+};
+var populateColumns = function () { };
 var printUserss = function () { return __awaiter(void 0, void 0, void 0, function () {
     var data, companies, usersFromJson;
     return __generator(this, function (_a) {
@@ -79,45 +94,45 @@ var printUserss = function () { return __awaiter(void 0, void 0, void 0, functio
             case 2:
                 companies = _a.sent();
                 usersFromJson = function () {
-                    var addUserstoCompany = function () {
-                        var newCompanies = companies.companies.map(function (x) { return ({
-                            name: x.name,
-                            employees: data
-                                .filter(function (y) { return y.uris.company === x.uri; })
-                                .map(function (z) { return z.name; })
-                                .join(", ")
-                        }); });
-                        var col = [];
-                        for (var i = 0; i < newCompanies.length; i++) {
-                            for (var key in newCompanies[i]) {
-                                if (col.indexOf(key) === -1) {
-                                    col.push(key);
-                                }
+                    // const addUserstoCompany = () => {
+                    //   const newCompanies: NewCompanies = companies.companies.map((x) => ({
+                    //     name: x.name,
+                    //     employees: data
+                    //       .filter((y) => y.uris.company === x.uri)
+                    //       .map((z) => z.name)
+                    //       .join(", "),
+                    //   }));
+                    var col = [];
+                    for (var i = 0; i < newCompanies.length; i++) {
+                        for (var key in newCompanies[i]) {
+                            if (col.indexOf(key) === -1) {
+                                col.push(key);
                             }
                         }
-                        var table = document.createElement("table");
-                        var tr = table.insertRow(-1);
-                        for (var i = 0; i < col.length; i++) {
-                            var th = document.createElement("th");
-                            th.innerHTML = col[i];
-                            tr.appendChild(th);
+                    }
+                    var table = document.createElement("table");
+                    var tr = table.insertRow(-1);
+                    for (var i = 0; i < col.length; i++) {
+                        var th = document.createElement("th");
+                        th.innerHTML = col[i];
+                        tr.appendChild(th);
+                    }
+                    for (var i = 0; i < newCompanies.length; i++) {
+                        tr = table.insertRow(-1);
+                        for (var j = 0; j < col.length; j++) {
+                            var tabCell = tr.insertCell(-1);
+                            tabCell.innerHTML = newCompanies[i][col[j]];
                         }
-                        for (var i = 0; i < newCompanies.length; i++) {
-                            tr = table.insertRow(-1);
-                            for (var j = 0; j < col.length; j++) {
-                                var tabCell = tr.insertCell(-1);
-                                tabCell.innerHTML = newCompanies[i][col[j]];
-                            }
-                        }
-                        var divShowData = document.querySelector("showData");
-                        divShowData.innerHTML = "";
-                        divShowData.appendChild(table);
-                    };
-                    addUserstoCompany();
+                    }
+                    var divShowData = document.querySelector("showData");
+                    divShowData.innerHTML = "";
+                    divShowData.appendChild(table);
                 };
-                usersFromJson();
+                addUserstoCompany();
                 return [2 /*return*/];
         }
     });
 }); };
+usersFromJson();
+;
 document.addEventListener("DOMContentLoaded", printUserss());
