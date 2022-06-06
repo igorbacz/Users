@@ -1,3 +1,5 @@
+// start the server: npx json-server --watch db.json
+
 const renderUsers = async () => {
   let uri = "http://localhost:3000/users";
 
