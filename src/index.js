@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var fetchUsers = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var uri, res, data;
+    var uri, res, users;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -47,8 +47,8 @@ var fetchUsers = function () { return __awaiter(void 0, void 0, void 0, function
                 res = _a.sent();
                 return [4 /*yield*/, res.json()];
             case 2:
-                data = _a.sent();
-                return [2 /*return*/, data];
+                users = _a.sent();
+                return [2 /*return*/, users];
         }
     });
 }); };
@@ -68,71 +68,74 @@ var fetchCompanies = function () { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
-var addUsersToCompanies = function (users, companies) { return companies.map(function (x) { return ({
-    name: x.name, employees: users
-        .filter(function (y) { return y.uris.company === x.uri; })
-        .map(function (z) { return z.name; })
-        .join(", ")
-}); }); };
-var findColums = function (columnsNames, objectToAnalyse) {
-    for (var ObjectKey in objectToAnalyse) {
-        var doesColumnExist = columnsNames.indexOf(ObjectKey) === -1;
+var addUsersToCompanies = function (users, companies) {
+    return companies.map(function (x) { return ({
+        name: x.name,
+        employees: users
+            .filter(function (y) { return y.uris.company === x.uri; })
+            .map(function (z) { return z.name; })
+            .join(", ")
+    }); });
+};
+var findColumnName = function (columnsNames, objectToAnalyse) {
+    for (var objectKey in objectToAnalyse) {
+        var doesColumnExist = columnsNames.indexOf(objectKey) === -1;
         if (doesColumnExist) {
-            columnsNames.push(ObjectKey);
+            columnsNames.push(objectKey);
         }
     }
 };
-var populateColumns = function () { };
-var printUserss = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var data, companies, usersFromJson;
+var populateColumns = function (companiesWithUsers) {
+    var columnsNames = [];
+    companiesWithUsers.forEach(function (companiesWithUsers) {
+        findColumnName(columnsNames, companiesWithUsers);
+    });
+    return columnsNames;
+};
+var setHeaderCell = function (headerContent) {
+    var headerElement = document.createElement("th");
+    headerElement.innerHTML = headerContent;
+    headerRow.appendChild(headerElement);
+};
+var populateHeader = function (table, columns) {
+    var headerRow = table.insertRow();
+    columns.forEach(function (column) {
+        setHeaderCell(column);
+    });
+};
+var populateRows = function (companiesWithUsers, columns, table) {
+    companiesWithUsers.forEach(function (item) {
+        var row = table.insertRow();
+        var columns = [];
+        row.insertCell().innerHTML = item[columns];
+    });
+};
+var displayTableContent = function (table) {
+    var divShowData = document.querySelector("showData");
+    divShowData.innerHTML = "";
+    divShowData.appendChild(table);
+};
+var renderTable = function (companiesWithUsers) {
+    var table = document.createElement("table");
+    var columns = populateColumns(companiesWithUsers);
+    populateHeader(table, columns);
+    populateRows(companiesWithUsers, table, columns);
+    displayTableContent(table);
+};
+var printUsers = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var users, companies, companiesWithUsers;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, renderUsers()];
+            case 0: return [4 /*yield*/, fetchUsers()];
             case 1:
-                data = _a.sent();
-                return [4 /*yield*/, renderCompanies()];
+                users = _a.sent();
+                return [4 /*yield*/, fetchCompanies()];
             case 2:
                 companies = _a.sent();
-                usersFromJson = function () {
-                    // const addUserstoCompany = () => {
-                    //   const newCompanies: NewCompanies = companies.companies.map((x) => ({
-                    //     name: x.name,
-                    //     employees: data
-                    //       .filter((y) => y.uris.company === x.uri)
-                    //       .map((z) => z.name)
-                    //       .join(", "),
-                    //   }));
-                    var col = [];
-                    for (var i = 0; i < newCompanies.length; i++) {
-                        for (var key in newCompanies[i]) {
-                            if (col.indexOf(key) === -1) {
-                                col.push(key);
-                            }
-                        }
-                    }
-                    var table = document.createElement("table");
-                    var tr = table.insertRow(-1);
-                    for (var i = 0; i < col.length; i++) {
-                        var th = document.createElement("th");
-                        th.innerHTML = col[i];
-                        tr.appendChild(th);
-                    }
-                    for (var i = 0; i < newCompanies.length; i++) {
-                        tr = table.insertRow(-1);
-                        for (var j = 0; j < col.length; j++) {
-                            var tabCell = tr.insertCell(-1);
-                            tabCell.innerHTML = newCompanies[i][col[j]];
-                        }
-                    }
-                    var divShowData = document.querySelector("showData");
-                    divShowData.innerHTML = "";
-                    divShowData.appendChild(table);
-                };
-                addUserstoCompany();
+                companiesWithUsers = addUsersToCompanies(users, companies);
+                renderTable(companiesWithUsers);
                 return [2 /*return*/];
         }
     });
 }); };
-usersFromJson();
-;
-document.addEventListener("DOMContentLoaded", printUserss());
+document.addEventListener("DOMContentLoaded", printUsers());

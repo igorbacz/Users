@@ -30,7 +30,7 @@ const printUserss = async () => {
           .join(", "),
       }));
 
-      let col = [];       <==== FIND COLUMN NAME
+      let col = []; // <==== FIND COLUMN NAME
       for (let i = 0; i < newCompanies.length; i++) {
         for (let key in newCompanies[i]) {
           if (col.indexOf(key) === -1) {
@@ -38,19 +38,23 @@ const printUserss = async () => {
           }
         }
       }
+      let table = document.createElement("table");
 
-      let tr = table.insertRow(-1);  
+      let tr = table.insertRow(-1);
 
-      for (let i = 0; i < col.length; i++) {  // <===== SET HEADER CELL, 
+      for (let i = 0; i < col.length; i++) {
+        // <===== SET HEADER CELL,
         let th = document.createElement("th");
         th.innerHTML = col[i];
         tr.appendChild(th);
       }
 
-      for (let i = 0; i < newCompanies.length; i++) {   // <=== POPULATE HEADER
+      for (let i = 0; i < newCompanies.length; i++) {
+        // <=== POPULATE HEADER
         tr = table.insertRow(-1);
 
-        for (let j = 0; j < col.length; j++) {  ////POPULATE ROWS
+        for (let j = 0; j < col.length; j++) {
+          ////POPULATE ROWS
           let tabCell = tr.insertCell(-1);
           tabCell.innerHTML = newCompanies[i][col[j]];
         }
@@ -60,7 +64,7 @@ const printUserss = async () => {
       divShowData.appendChild(table);
     };
     addUserstoCompany();
-  };
+  };;
   usersFromJson();
 };
 

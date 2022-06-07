@@ -3,8 +3,8 @@ import { User, Company, CompanyWithUsers } from "./types";
 const fetchUsers = async (): Promise<User> => {
   let uri: string = "http://localhost:3000/users";
   const res: Response = await fetch(uri);
-  const data: User = await res.json();
-  return data;
+  const users: User = await res.json();
+  return users;
 };
 
 const fetchCompanies = async (): Promise<Company> => {
@@ -24,45 +24,39 @@ const addUsersToCompanies = (users: User[], companies: Company[]) =>
   }));
 
 const findColumnName = (columnsNames: string[], objectToAnalyse: CompanyWithUsers[]) => {
-  for (let ObjectKey in objectToAnalyse) {
-    const doesColumnExist = columnsNames.indexOf(ObjectKey) === -1;
+  for (let objectKey in objectToAnalyse) {
+    const doesColumnExist = columnsNames.indexOf(objectKey) === -1;
     if (doesColumnExist) {
-      columnsNames.push(ObjectKey);
+      columnsNames.push(objectKey);
     }
   }
 };
 
 const populateColumns = (companiesWithUsers: any) => {
-  const columnsNames: string[] = [];
+  const columnsNames: any = [];
   companiesWithUsers.forEach((companiesWithUsers: CompanyWithUsers[]) => {
     findColumnName(columnsNames, companiesWithUsers);
   });
   return columnsNames;
 };
 
-const setHeaderCell = (headerContent: string, ) => {
+const setHeaderCell = (headerContent: string) => {
   const headerElement = document.createElement("th");
   headerElement.innerHTML = headerContent;
-  const headerRow = insertRow();
   headerRow.appendChild(headerElement);
 };
 
 const populateHeader = (table: HTMLTableElement, columns: any) => {
-  let column = [];
   const headerRow = table.insertRow();
   columns.forEach((column) => {
     setHeaderCell(column);
   });
-  return headerRow; // ?????
 };
 
-const populateRows = (companiesWithUsers: CompanyWithUsers[], columns:number => {
-  /// coś tu nie działa TO DO
+const populateRows = (companiesWithUsers: CompanyWithUsers[], columns: number, table: HTMLTableElement) => {
   companiesWithUsers.forEach((item) => {
-    const table: HTMLTableElement = document.createElement("table");
-
     const row: HTMLTableRowElement = table.insertRow();
-    const columns: any[] = [];
+    const columns: any = [];
     row.insertCell().innerHTML = item[columns];
   });
 };
@@ -74,7 +68,7 @@ const displayTableContent = (table: HTMLTableElement) => {
 };
 
 const renderTable = (companiesWithUsers: CompanyWithUsers[]) => {
-  const table = <HTMLTableElement>document.createElement("table");
+  const table: any = document.createElement("table");
   const columns = populateColumns(companiesWithUsers);
 
   populateHeader(table, columns);
