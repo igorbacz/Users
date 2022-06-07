@@ -40,6 +40,9 @@ const populateColumns = (companiesWithUsers: any) => {
   return columnsNames;
 };
 
+const table = document.createElement("table");
+const headerRow = table.insertRow();
+
 const setHeaderCell = (headerContent: string) => {
   const headerElement = document.createElement("th");
   headerElement.innerHTML = headerContent;
@@ -47,8 +50,7 @@ const setHeaderCell = (headerContent: string) => {
 };
 
 const populateHeader = (table: HTMLTableElement, columns: any) => {
-  const headerRow = table.insertRow();
-  columns.forEach((column) => {
+  columns.forEach((column: string) => {
     setHeaderCell(column);
   });
 };
