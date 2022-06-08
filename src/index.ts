@@ -1,4 +1,6 @@
 import { User, Company, CompanyWithUsers } from "./types";
+// start the server: npx json-server --watch db.json
+
 
 const fetchUsers = async (): Promise<User> => {
   let uri: string = "http://localhost:3000/users";
@@ -42,8 +44,8 @@ const populateRows = (companiesWithUsers: CompanyWithUsers[]) => {
   companiesWithUsers.forEach((item: any) => {
     const row: HTMLTableRowElement = table.insertRow();
     const columns: string[] = ["name", "employees"];
-    columns.forEach((col: string) => {
-      row.insertCell().innerHTML = item[col];
+    columns.forEach((column: string) => {
+      row.insertCell().innerHTML = item[column];
     });
   });
 };
