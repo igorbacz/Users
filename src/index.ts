@@ -2,17 +2,17 @@ import { User, Company, CompanyWithUsers } from "./types";
 // start the server: npx json-server --watch db.json
 
 
-const fetchUsers = async (): Promise<User> => {
+const fetchUsers = async (): Promise<User[]> => {
   let uri: string = "http://localhost:3000/users";
   const res: Response = await fetch(uri);
-  const users: User = await res.json();
+  const users: User[] = await res.json();
   return users;
 };
 
-const fetchCompanies = async (): Promise<Company> => {
+const fetchCompanies = async (): Promise<Company[]> => {
   let uri: string = "http://localhost:3000/companies";
   const res: Response = await fetch(uri);
-  const companies: Company = await res.json();
+  const companies: Company[] = await res.json();
   return companies;
 };
 
@@ -52,6 +52,9 @@ const populateRows = (companiesWithUsers: CompanyWithUsers[]) => {
 
 const displayTableContent = () => {
   const divShowData: HTMLDivElement | null = document.querySelector("#showData");
+  if (!divShowData) {
+    return;
+  }
   divShowData.innerHTML = "";
   divShowData.appendChild(table);
 };
@@ -64,8 +67,8 @@ const renderTable = (companiesWithUsers: CompanyWithUsers[]) => {
 };
 
 const printUsers: any = async () => {
-  const users: any = await fetchUsers();
-  const companies: any = await fetchCompanies();
+  const users: User[] = await fetchUsers();
+  const companies: Company[] = await fetchCompanies();
   const companiesWithUsers: CompanyWithUsers[] = addUsersToCompanies(users, companies);
   renderTable(companiesWithUsers);
 };
