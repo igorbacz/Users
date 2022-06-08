@@ -12,9 +12,8 @@ export interface Company {
   uri: string;
 }
 
-export type CompanyEmployee = string;
 
 export interface CompanyWithUsers {
   name: string;
-  employees: CompanyEmployee[];
+  employees: string;
 }

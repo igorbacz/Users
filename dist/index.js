@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,7 +7,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 const fetchUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     let uri = "http://localhost:3000/users";
     const res = yield fetch(uri);
@@ -28,21 +26,6 @@ const addUsersToCompanies = (users, companies) => companies.map((x) => ({
         .map((z) => z.name)
         .join(", "),
 }));
-const findColumnName = (columnsNames, objectToAnalyse) => {
-    for (let objectKey in objectToAnalyse) {
-        const doesColumnExist = columnsNames.indexOf(objectKey) === -1;
-        if (doesColumnExist) {
-            columnsNames.push(objectKey);
-        }
-    }
-};
-const populateColumns = (companiesWithUsers) => {
-    const columnsNames = [];
-    companiesWithUsers.forEach((companiesWithUsers) => {
-        findColumnName(columnsNames, companiesWithUsers);
-    });
-    return columnsNames;
-};
 const table = document.createElement("table");
 const headerRow = table.insertRow();
 const setHeaderCell = (headerContent) => {
@@ -50,29 +33,30 @@ const setHeaderCell = (headerContent) => {
     headerElement.innerHTML = headerContent;
     headerRow.appendChild(headerElement);
 };
-const populateHeader = (table, columns) => {
+const populateHeader = (columns) => {
     columns.forEach((column) => {
         setHeaderCell(column);
     });
 };
-const populateRows = (companiesWithUsers, columns, table) => {
+const populateRows = (companiesWithUsers) => {
     companiesWithUsers.forEach((item) => {
         const row = table.insertRow();
-        const columns = [];
-        row.insertCell().innerHTML = item[columns];
+        const columns = ["name", "employees"];
+        columns.forEach((col) => {
+            row.insertCell().innerHTML = item[col];
+        });
     });
 };
-const displayTableContent = (table) => {
-    const divShowData = document.querySelector("showData");
+const displayTableContent = () => {
+    const divShowData = document.querySelector("#showData");
     divShowData.innerHTML = "";
     divShowData.appendChild(table);
 };
 const renderTable = (companiesWithUsers) => {
-    const table = document.createElement("table");
-    const columns = populateColumns(companiesWithUsers);
-    populateHeader(table, columns);
-    populateRows(companiesWithUsers, table, columns);
-    displayTableContent(table);
+    const columns = ["name", "employees"];
+    populateHeader(columns);
+    populateRows(companiesWithUsers);
+    displayTableContent();
 };
 const printUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield fetchUsers();
@@ -81,3 +65,4 @@ const printUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     renderTable(companiesWithUsers);
 });
 document.addEventListener("DOMContentLoaded", printUsers());
+export {};

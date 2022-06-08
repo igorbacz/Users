@@ -18,30 +18,13 @@ const addUsersToCompanies = (users: User[], companies: Company[]) =>
   companies.map((x) => ({
     name: x.name,
     employees: users
-      .filter((y) => y.uris.company === x.uri)
-      .map((z) => z.name)
+      .filter((y: User) => y.uris.company === x.uri)
+      .map((z: User) => z.name)
       .join(", "),
   }));
 
-const findColumnName = (columnsNames: string[], objectToAnalyse: CompanyWithUsers[]) => {
-  for (let objectKey in objectToAnalyse) {
-    const doesColumnExist = columnsNames.indexOf(objectKey) === -1;
-    if (doesColumnExist) {
-      columnsNames.push(objectKey);
-    }
-  }
-};
-
-const populateColumns = (companiesWithUsers: any) => {
-  const columnsNames: any = [];
-  companiesWithUsers.forEach((companiesWithUsers: CompanyWithUsers[]) => {
-    findColumnName(columnsNames, companiesWithUsers);
-  });
-  return columnsNames;
-};
-
-const table = document.createElement("table");
-const headerRow = table.insertRow();
+const table: HTMLTableElement = document.createElement("table");
+const headerRow: HTMLTableRowElement = table.insertRow();
 
 const setHeaderCell = (headerContent: string) => {
   const headerElement = document.createElement("th");
@@ -49,39 +32,39 @@ const setHeaderCell = (headerContent: string) => {
   headerRow.appendChild(headerElement);
 };
 
-const populateHeader = (table: HTMLTableElement, columns: any) => {
+const populateHeader = (columns: string[]) => {
   columns.forEach((column: string) => {
     setHeaderCell(column);
   });
 };
 
-const populateRows = (companiesWithUsers: CompanyWithUsers[], columns: number, table: HTMLTableElement) => {
-  companiesWithUsers.forEach((item) => {
+const populateRows = (companiesWithUsers: CompanyWithUsers[]) => {
+  companiesWithUsers.forEach((item: any) => {
     const row: HTMLTableRowElement = table.insertRow();
-    const columns: any = [];
-    row.insertCell().innerHTML = item[columns];
+    const columns: string[] = ["name", "employees"];
+    columns.forEach((col: string) => {
+      row.insertCell().innerHTML = item[col];
+    });
   });
 };
 
-const displayTableContent = (table: HTMLTableElement) => {
-  const divShowData: HTMLDivElement | null = document.querySelector("showData");
+const displayTableContent = () => {
+  const divShowData: HTMLDivElement | null = document.querySelector("#showData");
   divShowData.innerHTML = "";
   divShowData.appendChild(table);
 };
 
 const renderTable = (companiesWithUsers: CompanyWithUsers[]) => {
-  const table: any = document.createElement("table");
-  const columns = populateColumns(companiesWithUsers);
-
-  populateHeader(table, columns);
-  populateRows(companiesWithUsers, table, columns);
-  displayTableContent(table);
+  const columns: string[] = ["name", "employees"];
+  populateHeader(columns);
+  populateRows(companiesWithUsers);
+  displayTableContent();
 };
 
 const printUsers: any = async () => {
   const users: any = await fetchUsers();
   const companies: any = await fetchCompanies();
-  const companiesWithUsers: any = addUsersToCompanies(users, companies);
+  const companiesWithUsers: CompanyWithUsers[] = addUsersToCompanies(users, companies);
   renderTable(companiesWithUsers);
 };
 

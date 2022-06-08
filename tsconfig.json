@@ -2,8 +2,7 @@
     "compilerOptions": {
         "rootDir": "./src",
          "outDir": "./dist",
-        "target": "ES2015",
-        "module":"CommonJS",
+        "target": "es6",
         "strict":true,
         "forceConsistentCasingInFileNames":false,
         "lib":["DOM","ES6"]
